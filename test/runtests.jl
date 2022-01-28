@@ -574,8 +574,7 @@ end
         @test @inferred(zero(typeof(1m))) === 0m
         @test @inferred(zero(typeof(1.0m))) === 0.0m
         @test_throws ArgumentError zero(Quantity{Int})
-        @test zero(Quantity{Int, 𝐋}) == 0m
-        @test zero(Quantity{Int, 𝐋}) isa Quantity{Int}
+        @test zero(Quantity{Int, 𝐋}) === 0m
         @test @inferred(π/2*u"rad" + 90u"°") ≈ π        # Dimless quantities
         @test @inferred(π/2*u"rad" - 90u"°") ≈ 0        # Dimless quantities
         @test_throws DimensionError 1+1m                # Dim mismatched

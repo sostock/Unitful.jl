@@ -381,22 +381,17 @@ for (f,r) = ((:trunc, :RoundToZero), (:floor, :RoundDown), (:ceil, :RoundUp))
     @eval $f(u::Units, x::AbstractQuantity; kwargs...) = round(u, x, $r; kwargs...)
 end
 
-zero(x::AbstractQuantity) = Quantity(zero(x.val), unit(x))
-zero(x::AffineQuantity) = Quantity(zero(x.val), absoluteunit(x))
+zero(x::AbstractQuantity) = zero(typeof(x))
 zero(x::Type{<:AbstractQuantity{T}}) where {T} = throw(ArgumentError("zero($x) not defined."))
 zero(x::Type{<:AbstractQuantity{T,D}}) where {T,D} = zero(T) * upreferred(D)
-zero(x::Type{<:AbstractQuantity{T,D,U}}) where {T,D,U<:ScalarUnits} = zero(T)*U()
-zero(x::Type{<:AbstractQuantity{T,D,U}}) where {T,D,U<:AffineUnits} = zero(T)*absoluteunit(U())
+zero(x::Type{<:AbstractQuantity{T,D,U}}) where {T,D,U} = zero(T)*absoluteunit(U())
 
-one(x::AbstractQuantity) = one(x.val)
+one(x::AbstractQuantity) = one(typeof(x))
 one(x::AffineQuantity) =
     throw(AffineError("no multiplicative identity for affine quantity $x."))
-oneunit(x::AffineQuantity) = Quantity(one(x.val), absoluteunit(x))
-oneunit(x::Type{<:AbstractQuantity{T,D,U}}) where {T,D,U<:AffineUnits} = Quantity(one(T), absoluteunit(U()))
-get_T(::Type{<:AbstractQuantity{T}}) where T = T
-get_T(::Type{<:AbstractQuantity{T,D}}) where {T,D} = T
-get_T(::Type{<:AbstractQuantity{T,D,U}}) where {T,D,U} = T
-one(x::Type{<:AbstractQuantity}) = one(get_T(x))
+oneunit(x::AbstractQuantity) = oneunit(typeof(x))
+oneunit(x::Type{<:AbstractQuantity{T,D,U}}) where {T,D,U} = Quantity(one(T), absoluteunit(U()))
+one(x::Type{<:AbstractQuantity{T}}) where T = one(T)
 one(x::Type{<:AffineQuantity}) =
     throw(AffineError("no multiplicative identity for affine quantity type $x."))
 
