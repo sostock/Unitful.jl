@@ -590,7 +590,7 @@ end
 Returns a [`Unitful.Units`](@ref) object that can be used to construct affine quantities.
 Primarily, this is for relative temperatures (as opposed to absolute temperatures,
 which transform as usual under unit conversion). To use this function, pass the scale offset,
-e.g. `affineunit(273.15K)` yields a Celsius unit.
+e.g. `affineunit((27315//100)K)` yields a Celsius unit.
 """
 affineunit(x::Quantity{T,D,FreeUnits{N,D,nothing}}) where {N,D,T} =
     FreeUnits{N,D,Affine{-ustrip(x)}}()
